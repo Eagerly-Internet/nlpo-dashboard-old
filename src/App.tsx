@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Dashboard from "./Components/Daskboard";
+import { AmcatIndex, IndexLogin } from "amcat4react";
+import { Modal } from "semantic-ui-react";
 
 function App() {
+  const [index, setIndex] = useState<AmcatIndex>();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Dashboard index={index} />
+      <Modal open={!index}>
+        <Modal.Content>
+          <IndexLogin
+            host="http://localhost:5001"
+            index="oogtv"
+            onLogin={setIndex}
+          />
+        </Modal.Content>
+      </Modal>
     </div>
   );
 }
