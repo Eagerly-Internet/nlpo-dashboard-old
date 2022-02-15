@@ -4,6 +4,7 @@ import Dashboard from "./Components/Dashboard";
 import { AmcatIndex, IndexLogin } from "amcat4react";
 import { Modal } from "semantic-ui-react";
 
+
 function App() {
   const [index, setIndex] = useState<AmcatIndex>();
 
