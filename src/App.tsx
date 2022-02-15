@@ -14,7 +14,7 @@ function App() {
         <Modal.Content>
           <IndexLogin
             host="http://localhost:5000"
-            index="oogtv"
+            index="nlpo"
             onLogin={setIndex}
           />
         </Modal.Content>
