@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
+import { useState } from "react";
 import "./App.css";
-import Dashboard from "./Components/Daskboard";
+import Dashboard from "./Components/Dashboard";
 import { AmcatIndex, IndexLogin } from "amcat4react";
 import { Modal } from "semantic-ui-react";
 
@@ -14,7 +13,7 @@ function App() {
       <Modal open={!index}>
         <Modal.Content>
           <IndexLogin
-            host="http://localhost:5001"
+            host="http://localhost:5000"
             index="oogtv"
             onLogin={setIndex}
           />
