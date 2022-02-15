@@ -3,10 +3,20 @@ import "./App.css";
 import Dashboard from "./Components/Dashboard";
 import { AmcatIndex, IndexLogin } from "amcat4react";
 import { Modal } from "semantic-ui-react";
-
+import { useCookies } from "react-cookie";
 
 function App() {
-  const [index, setIndex] = useState<AmcatIndex>();
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "nlpo-dashboard-oogtv",
+  ]);
+  const [index, setIndex] = useState<AmcatIndex>(
+    cookies["nlpo-dashboard-oogtv"]
+  );
+
+  const handleLogin = (index: AmcatIndex) => {
+    setCookie("nlpo-dashboard-oogtv", JSON.stringify(index));
+    setIndex(index);
+  };
 
   return (
     <div className="App">
@@ -16,7 +26,7 @@ function App() {
           <IndexLogin
             host="http://localhost:5000"
             index="oogtv"
-            onLogin={setIndex}
+            onLogin={handleLogin}
           />
         </Modal.Content>
       </Modal>
