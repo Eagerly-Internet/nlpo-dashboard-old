@@ -11,15 +11,29 @@ export default function Dashboard({ index }: DashboardProps) {
     <>
       <Grid celled padded style={{ height: "100vh" }}>
         <Grid.Row stretched>
-          <Grid.Column width={8}>
+          <Grid.Column width={16}>
           <Header>Aantal artikelen per week</Header>
             <AggregateResult
               index={index}
               query={{filters: {platform: {values: ["Website"]}}}}
-              height="100%"
+              height={400}
               options={{
                 display: "linechart",
-                axes: [{ field: "date", interval: "week" }],
+                axes: [{ field: "date", interval: "week" }, {field: "omroep"}],
+              }}
+            />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row stretched>
+          <Grid.Column width={8}>
+          <Header>Aantal artikelen/posts per platform</Header>
+            <AggregateResult
+              index={index}
+              query ={{}}
+              height={400}
+              options={{
+                display: "barchart",
+                axes: [{ field: "omroep"}, {field: "platform"}],
               }}
             />
           </Grid.Column>
@@ -34,33 +48,29 @@ export default function Dashboard({ index }: DashboardProps) {
         </Grid.Row>
         <Grid.Row stretched>
           <Grid.Column width={8}>
-          <Header>Aantal artikelen per auteur</Header>
+          <Header>Populaire tags</Header>
             <AggregateResult
               index={index}
-              query={{filters: {author: {values: ["Andor Heij", "Gert van Akkeren","Tom Veenstra"]}}}}
-              height="100%"
+              query ={{}}
+              height={400}
               options={{
                 display: "barchart",
-                axes: [{ field: "author"}],
+                axes: [{ field: "tags"}],
+                limit: 10
               }}
             />
           </Grid.Column>
           <Grid.Column width={8}>
-            <Header>Gebruikte tags in het nieuws</Header>
+          <Header>Journalisten</Header>
             <AggregateResult
               index={index}
-              query={{filters:{author: {values: ["Andor Heij", "Gert van Akkeren","Tom Veenstra"]}}}}
-              height="100%"
+              query ={{}}
+              height={400}
               options={{
                 display: "barchart",
-                axes: [{ field: "tags"}],
+                axes: [{ field: "author"}],
+                limit: 10
               }}
-            />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={16}>
-            <Articles index={index} query={{}} 
             />
           </Grid.Column>
         </Grid.Row>
