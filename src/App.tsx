@@ -5,6 +5,8 @@ import { Amcat, AmcatIndex, IndexLogin } from "amcat4react";
 import { Modal } from "semantic-ui-react";
 import { useCookies } from "react-cookie";
 
+const INDEX="sleutelstad2"
+
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies([
     "nlpo-dashboard-nlpo",
@@ -15,9 +17,10 @@ function App() {
     const ix: AmcatIndex = cookies["nlpo-dashboard-nlpo"]
     console.log(ix);
     if (ix == null) return;
+    ix.index = INDEX;
     // Check login  
     // TODO: would be better to reset token, but that expects a password for now
-     Amcat.getIndices(ix).then((_d)=> setIndex(ix)).catch((error) => {
+     Amcat.getIndex(ix, ix.index).then((_d)=> setIndex(ix)).catch((error) => {
        console.error(error);
        removeCookie("nlpo-dashboard-nlpo")
      })
@@ -35,7 +38,7 @@ function App() {
         <Modal.Content>
           <IndexLogin
             host="http://localhost:5000"
-            index="nlpo"
+            index={INDEX}
             onLogin={handleLogin}
           />
         </Modal.Content>
