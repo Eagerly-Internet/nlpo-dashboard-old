@@ -5,7 +5,8 @@ import { Amcat, AmcatIndex, IndexLogin } from "amcat4react";
 import { Modal } from "semantic-ui-react";
 import { useCookies } from "react-cookie";
 
-const INDEX="sleutelstad2"
+const INDEX="zuidwest";
+const HOST="https://nlpo.nieuwsmonitor.org/api";
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -37,7 +38,7 @@ function App() {
       <Modal open={!index}>
         <Modal.Content>
           <IndexLogin
-            host="http://localhost:5000"
+            host={HOST}
             index={INDEX}
             onLogin={handleLogin}
           />
