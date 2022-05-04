@@ -5,7 +5,7 @@ import { Amcat, AmcatIndex, IndexLogin } from "amcat4react";
 import { Modal } from "semantic-ui-react";
 import { useCookies } from "react-cookie";
 
-const INDEX="zuidwest";
+const INDEX="nlpo";
 const HOST="https://nlpo.nieuwsmonitor.org/api";
 
 function App() {
