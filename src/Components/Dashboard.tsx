@@ -21,7 +21,7 @@ export default function Dashboard({ index }: DashboardProps) {
       <Grid padded style={{ height: "100vh" }}>
         <Grid.Row stretched>
           <Grid.Column width={16}>
-          <Header>Aantal items per dag per platform</Header>
+          <Header>Aantal items per dag per omroep</Header>
             <AggregateResult
               index={index}
               query={query}
@@ -35,7 +35,7 @@ export default function Dashboard({ index }: DashboardProps) {
         </Grid.Row>
         <Grid.Row stretched>
           <Grid.Column width={8}>
-          <Header>Totaal aantal items per omroep</Header>
+          <Header>Artikelen per moment van de dag</Header>
             <AggregateResult
               index={index}
               query={query}
@@ -48,7 +48,7 @@ export default function Dashboard({ index }: DashboardProps) {
             />
           </Grid.Column>
           <Grid.Column width={8}>
-          <Header>Totaal aantal items per weekdag</Header>
+          <Header>Artikelen per dag van de week</Header>
             <AggregateResult
               index={index}
               query={query}
