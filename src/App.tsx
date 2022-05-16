@@ -1,47 +1,44 @@
+import { AmcatUser, LoginForm } from "amcat4react";
+import { refreshToken } from "amcat4react/dist/Amcat";
 import { useEffect, useState } from "react";
-import "./App.css";
-import Dashboard from "./Components/Dashboard";
-import { Amcat, AmcatIndex, IndexLogin } from "amcat4react";
-import { Modal } from "semantic-ui-react";
 import { useCookies } from "react-cookie";
+import { Modal } from "semantic-ui-react";
+import "./App.css";
+import Dashboards from "./Components/Dashboards";
 
-const INDEX="nlpo";
-const HOST="https://nlpo.nieuwsmonitor.org/api";
+const HOST = "https://nlpo.nieuwsmonitor.org/api";
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies([
     "nlpo-dashboard-nlpo",
   ]);
-  const [index, setIndex] = useState<AmcatIndex>();
+  const [user, setUser] = useState<AmcatUser>();
 
   useEffect(() => {
-    const ix: AmcatIndex = cookies["nlpo-dashboard-nlpo"]
-    console.log(ix);
-    if (ix == null) return;
-    ix.index = INDEX;
-    // Check login  
-    // TODO: would be better to reset token, but that expects a password for now
-     Amcat.getIndex(ix, ix.index).then((_d)=> setIndex(ix)).catch((error) => {
-       console.error(error);
-       removeCookie("nlpo-dashboard-nlpo")
-     })
-  }, [index, setIndex, cookies, setCookie, removeCookie])
+    const u: AmcatUser = cookies["nlpo-dashboard-nlpo"];
+    if (u == null) return;
+    refreshToken(u)
+      .then((result) => {
+        setUser({ ...u, token: result.data.access_token });
+      })
+      .catch((error) => {
+        console.error(error);
+        removeCookie("nlpo-dashboard-nlpo");
+      });
+  }, [setUser, cookies, setCookie, removeCookie]);
 
-  const handleLogin = (index: AmcatIndex) => {
-    setCookie("nlpo-dashboard-nlpo", JSON.stringify(index));
-    setIndex(index);
+  const handleLogin = (u: AmcatUser) => {
+    setCookie("nlpo-dashboard-nlpo", JSON.stringify(u));
+    setUser(u);
   };
 
+  console.log(user);
   return (
     <div className="App">
-      <Dashboard index={index} />
-      <Modal open={!index}>
+      <Dashboards user={user} />
+      <Modal open={!user}>
         <Modal.Content>
-          <IndexLogin
-            host={HOST}
-            index={INDEX}
-            onLogin={handleLogin}
-          />
+          <LoginForm fix_host={HOST} onLogin={handleLogin} />
         </Modal.Content>
       </Modal>
     </div>
