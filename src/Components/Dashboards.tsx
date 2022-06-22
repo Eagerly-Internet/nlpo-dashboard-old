@@ -1,45 +1,49 @@
 import { AmcatUser } from "amcat4react";
 import { useState } from "react";
-import { Menu } from "semantic-ui-react";
-import DashboardNLPO from "./DashboardNLPO";
-import DashboardOmroep from "./DashboardOmroep";
+import { Container, Menu } from "semantic-ui-react";
+import { OMROEPEN } from "../omroepen";
+import DashboardNLPO from "./nlpo/DashboardNLPO";
+import DashboardOmroep from "./omroep/DashboardOmroep";
 
-interface DashboardsProps {
+export interface DashboardsProps {
   user?: AmcatUser;
 }
 
-const DASHBOARDS = new Map([
-  ["NLPO", (u: AmcatUser) => <DashboardNLPO index={{ ...u, index: "nlpo" }} />],
-  [
-    "TV Valkenburg",
-    (u: AmcatUser) => (
-      <DashboardOmroep index={{ ...u, index: "tvvalkenburg" }} />
-    ),
-  ],
-]);
+function get_dashboard(user?: AmcatUser, dashboard_name?: string) {
+  if (user == null || dashboard_name == null) return null;
+  else if (dashboard_name === "nlpo") {
+    return <DashboardNLPO user={user} />
+  } else {
+    return <DashboardOmroep index={{...user, index: dashboard_name}} />
+  }
 
-function get_dashboard(user: AmcatUser, name: string) {
-  const fn = DASHBOARDS.get(name);
-  return fn && fn(user);
 }
 
 export default function Dashboards({ user }: DashboardsProps) {
-  const [selected, setSelected] = useState("NLPO");
+  const [selected, setSelected] = useState("nlpo");
+  const dashboard = get_dashboard(user, selected);
   return (
     <>
-      <Menu attached="top" tabular>
-        {Array.from(DASHBOARDS.keys()).map((name) => (
-          <Menu.Item
-            name={name}
-            key={name}
-            active={!!user && selected == name}
+      <Menu fixed="top" tabular style={{background: 'white'}}>
+      <Menu.Item
+            name="NLPO"
+            active={!!user && selected === "nlpo"}
             disabled={!user}
-            onClick={() => setSelected(name)}
+            onClick={() => setSelected("nlpo")}
           />
-        ))}
+        {
+          OMROEPEN.map((o) => <Menu.Item
+          key={o.index}
+            name={o.label}
+          active={!!user && selected === o.index}
+          disabled={!user}
+          onClick={() => setSelected(o.index)}
+        />)
+        }
       </Menu>{" "}
-      <p>&nbsp;</p>
-      {user ? get_dashboard(user, selected) : null}
+      <Container style={{paddingTop: "60px"}}>
+      {dashboard}
+      </Container>
     </>
   );
 }

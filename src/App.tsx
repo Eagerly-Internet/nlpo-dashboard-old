@@ -7,6 +7,7 @@ import "./App.css";
 import Dashboards from "./Components/Dashboards";
 
 const HOST = "https://nlpo.nieuwsmonitor.org/api";
+//const HOST = "http://localhost:5000";
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -16,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const u: AmcatUser = cookies["nlpo-dashboard-nlpo"];
-    if (u == null) return;
+    if (u == null || u.host !== HOST) return;
     refreshToken(u)
       .then((result) => {
         setUser({ ...u, token: result.data.access_token });

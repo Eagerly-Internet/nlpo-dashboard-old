@@ -1,37 +1,43 @@
 import {
-  AggregateResult,
-  AmcatFilters,
-  AmcatIndex,
+  AggregateResult, AmcatIndex,
   AmcatQuery,
   Articles,
   LocationHeatmap,
-  SimpleQueryForm,
+  SimpleQueryForm
 } from "amcat4react";
+import { addFilter } from "amcat4react/dist/Amcat";
 import { useState } from "react";
-import { Container, Grid, Header } from "semantic-ui-react";
+import { Container, Grid, Header, Menu } from "semantic-ui-react";
+import { addFilters } from "../../lib";
+import { OMROEPEN } from "../../omroepen";
+import { KANALEN } from "../nlpo/DashboardNLPO";
+import Tile from "../Tile";
+import Locaties from "./Locaties";
+import Metrics from "./Metrics";
 
 interface DashboardProps {
   index?: AmcatIndex;
 }
 
-function addFilters(q: AmcatQuery, filters: AmcatFilters) {
-  const result = { ...q.filters, ...filters };
-  return { ...q, filters: result };
-}
-
 export default function DashboardOmroep({ index }: DashboardProps) {
+  const [kanaal2, setKanaal2] = useState(KANALEN[0]);
+  const [kanaal3, setKanaal3] = useState(KANALEN[0]);
   let d = new Date();
+  const vergelijk_vanaf = new Date(d.getFullYear(), d.getMonth() - 1, 1).toISOString()
   d.setDate(d.getDate() - 30);
 
   const [query, setQuery] = useState<AmcatQuery>({
     filters: { date: { gte: d.toISOString().substring(0, 10) } },
   });
-
   if (index == null) return null;
+  const omroep = OMROEPEN.filter((o) => o.index === index.index)[0];
+
   return (
     <Container>
       <SimpleQueryForm index={index} value={query} onSubmit={setQuery} />
-      <Header>Dashboard voor {index.index}</Header>
+      
+      <Header>Dashboard voor {omroep.label}</Header>
+      <Metrics index={index} />
       <Grid padded style={{ height: "100vh" }}>
         <Grid.Row stretched>
           <Grid.Column width={16}>
@@ -51,6 +57,23 @@ export default function DashboardOmroep({ index }: DashboardProps) {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row stretched>
+          <Grid.Column width={16}>
+            <Header as="h2">Deze maand vergeleken met verleden maand</Header>
+            <AggregateResult
+              index={index}
+              query={addFilter(query, {date: {gte: vergelijk_vanaf}})}
+              height={400}
+              options={{
+                display: "linechart",
+                axes: [
+                  { field: "date", interval: "dayofmonth" },
+                  { field: "date", interval: "monthnr" },
+                ],
+              }}
+            />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row stretched>
           <Grid.Column width={10}>
             <Header>Recente items</Header>
             <div style={{ textAlign: "left" }}>
@@ -64,10 +87,7 @@ export default function DashboardOmroep({ index }: DashboardProps) {
             </div>
           </Grid.Column>
           <Grid.Column width={6}>
-            <LocationHeatmap
-              index={index}
-              options={{ field: "location_geo" }}
-            />
+            <Locaties index={index} query={query} />
           </Grid.Column>
         </Grid.Row>
 
@@ -91,35 +111,59 @@ export default function DashboardOmroep({ index }: DashboardProps) {
             />
           </Grid.Column>
         </Grid.Row>
-
         <Grid.Row stretched>
-          <Grid.Column width={8}>
+        <Grid.Column width={8}>
             <Header>Artikelen per moment van de dag</Header>
+            <div style={{
+              marginLeft: "15%",
+            }} >
+              <Menu pointing secondary>
+                {
+                  KANALEN.map((k) => <Menu.Item
+                    key={k}
+                    name={k}
+                    active={k === kanaal2}
+                    onClick={() => { setKanaal2(k) }}
+                  />)
+                }
+              </Menu>
+            </div>
             <AggregateResult
               index={index}
-              query={query}
+              query={addFilters(query, { platform: { values: [kanaal2] } })}
               height={400}
               options={{
                 display: "barchart",
                 axes: [
-                  { field: "date", interval: "daypart" },
-                  { field: "platform" },
-                ],
+                  { field: "date", interval: "daypart" }                ],
                 limit: 10,
               }}
             />
           </Grid.Column>
           <Grid.Column width={8}>
             <Header>Artikelen per dag van de week</Header>
+            <div style={{
+              marginLeft: "15%",
+            }} >
+              <Menu pointing secondary>
+                {
+                  KANALEN.map((k) => <Menu.Item
+                    key={k}
+                    name={k}
+                    active={k === kanaal3}
+                    onClick={() => { setKanaal3(k) }}
+                  />)
+                }
+              </Menu>
+            </div>
             <AggregateResult
               index={index}
-              query={query}
+              query={addFilters(query, { platform: { values: [kanaal3] } })}
               height={400}
               options={{
                 display: "barchart",
                 axes: [
                   { field: "date", interval: "dayofweek" },
-                  { field: "platform" },
                 ],
                 limit: 10,
               }}
@@ -128,16 +172,16 @@ export default function DashboardOmroep({ index }: DashboardProps) {
         </Grid.Row>
 
         <Grid.Row stretched>
-          <Grid.Column width={8}>
-            <Header>Populaire categories</Header>
+        <Grid.Column width={8}>
+            <Header>Onderwerpen</Header>
             <AggregateResult
               index={index}
               query={query}
               height={400}
               options={{
                 display: "barchart",
-                axes: [{ field: "categories" }],
-                limit: 10,
+                axes: [{ field: "topic" }],
+                limit: 12,
               }}
             />
           </Grid.Column>
