@@ -51,15 +51,17 @@ export default function DashboardOmroep({
           addFilterLabel="Filter toevoegen"
         />
       )}
-      <Header>Dashboard voor {omroep.label}</Header>
+      <InfoHeader
+        text={`Dashboard voor ${omroep.label}`}
+        info="In de tiles hieronder wordt het aantal gepubliceerde artikelen van deze week vergeleken met vorige week. Dit geldt ook voor het totaal aantal views en eht aantal Facebookposts en het totaal aantal engaged FB gebruikers"
+      />
       <Metrics index={index} />
-      <text> informatie tekst</text>
       <Grid padded style={{ height: "100vh" }}>
         <Grid.Row stretched>
           <Grid.Column width={16}>
             <InfoHeader
               text="Aantal items per dag per platform"
-              info="Hier zit u toby niet"
+              info="In deze analyse wordt per platform het aantal items per dag weergegeven."
             />
             <AggregateResult
               index={index}
@@ -77,7 +79,10 @@ export default function DashboardOmroep({
         </Grid.Row>
         <Grid.Row stretched>
           <Grid.Column width={16}>
-            <Header as="h2">Deze maand vergeleken met verleden maand</Header>
+            <InfoHeader
+              text={"Deze maand vergeleken met verleden maand"}
+              info="In deze figuur wordt het aantal artikelen op de website van deze maand vergeleken met de maand ervoor"
+            />{" "}
             <AggregateResult
               index={index}
               query={addFilter(query, { date: { gte: vergelijk_vanaf } })}
@@ -94,25 +99,35 @@ export default function DashboardOmroep({
         </Grid.Row>
         <Grid.Row stretched>
           <Grid.Column width={10}>
-            <Header>Recente items</Header>
+            <InfoHeader
+              text={"Recente items"}
+              info="In dit overzicht zien we de tien meest recente items van de website"
+            />
             <div style={{ textAlign: "left" }}>
               <Articles
                 index={index}
                 query={query}
-                sort={["date"]}
+                sort={[{ date: { order: "desc" } }]}
                 asSnippets
                 perPage={7}
               />
             </div>
           </Grid.Column>
           <Grid.Column width={6}>
+            <InfoHeader
+              text={"Locaties"}
+              info="Hieronder is een plattegrond te zien waarin alle plaatsen waar het nieuws over gaat worden weergegeven. Het tabblad Kernen geeft weer welke van de kernen die de lokale omroep bedient ook daadwerkelijk genoemd wordt in het nieuws. Het tabblad Alle locaties geeft alle locaties weer die in het nieuws van de lokale omroep genoemd zijn."
+            />
             <Locaties index={index} query={query} />
           </Grid.Column>
         </Grid.Row>
 
         <Grid.Row stretched>
           <Grid.Column width={16}>
-            <Header>Meeste engagement</Header>
+            <InfoHeader
+              text={"Meeste engagement"}
+              info="In dit overzicht zien we items die het meeste engagement kennen op website, Twitter en Facebook. Klik op de kolomnaam om de artikelen te sorteren."
+            />{" "}
             <Articles
               index={index}
               //query={addFilters(query, {
@@ -132,7 +147,10 @@ export default function DashboardOmroep({
         </Grid.Row>
         <Grid.Row stretched>
           <Grid.Column width={8}>
-            <Header>Artikelen per moment van de dag</Header>
+            <InfoHeader
+              text={"Artikelen per moment van de dag"}
+              info="Aantal artikelen gepubliceerd per moment van de dag. Klik op de tabbladen om verschillende platformen te bekijken."
+            />
             <div
               style={{
                 marginLeft: "15%",
@@ -163,7 +181,10 @@ export default function DashboardOmroep({
             />
           </Grid.Column>
           <Grid.Column width={8}>
-            <Header>Artikelen per dag van de week</Header>
+            <InfoHeader
+              text={"Artikelen per dag van de week"}
+              info="Aantal artikelen gepubliceerd per dag van de week. Klik op de tabbladen om verschillende platformen te bekijken."
+            />
             <div
               style={{
                 marginLeft: "15%",
@@ -197,7 +218,10 @@ export default function DashboardOmroep({
 
         <Grid.Row stretched>
           <Grid.Column width={8}>
-            <Header>Onderwerpen</Header>
+            <InfoHeader
+              text={"Onderwerpen in het nieuws"}
+              info="Aantal artikelen per onderwerp. Deze onderwerpen zijn gebaseerd op zoektermen rondom een onderwerp, gebaseerd op eerder onderzoek naar het nieuws van lokale omroepen. Een artikel kan hierbij ook over meerdere onderwerpen gaan."
+            />
             <AggregateResult
               index={index}
               query={query}
@@ -210,7 +234,10 @@ export default function DashboardOmroep({
             />
           </Grid.Column>
           <Grid.Column width={8}>
-            <Header>Journalisten</Header>
+            <InfoHeader
+              text={"Journalisten"}
+              info="Aantal artikelen gepubliceerd door de verschillende journalisten van de lokale omroep."
+            />{" "}
             <AggregateResult
               index={index}
               query={query}
