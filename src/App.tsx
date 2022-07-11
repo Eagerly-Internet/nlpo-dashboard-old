@@ -36,7 +36,7 @@ function App() {
   console.log(user);
   return (
     <div className="App">
-      <Dashboards user={user} />
+      {user == null ? null : <Dashboards user={user} />}
       <Modal open={!user}>
         <Modal.Content>
           <LoginForm fix_host={HOST} onLogin={handleLogin} />
