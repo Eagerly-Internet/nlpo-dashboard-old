@@ -9,7 +9,7 @@ import { addFilter } from "amcat4react/dist/Amcat";
 import { useState } from "react";
 import { Container, Grid, Header, Menu } from "semantic-ui-react";
 import { addFilters } from "../../lib";
-import { OMROEPEN } from "../../omroepen";
+import { FILTERFIELDS, OMROEPEN } from "../../omroepen";
 import { InfoHeader } from "../InfoHeader";
 import { KANALEN } from "../nlpo/DashboardNLPO";
 import Locaties from "./Locaties";
@@ -43,7 +43,13 @@ export default function DashboardOmroep({
   return (
     <Container>
       {!showFilters ? null : (
-        <SimpleQueryForm index={index} value={query} onSubmit={setQuery} />
+        <SimpleQueryForm
+          index={index}
+          value={query}
+          onSubmit={setQuery}
+          fieldList={FILTERFIELDS}
+          addFilterLabel="Filter toevoegen"
+        />
       )}
       <Header>Dashboard voor {omroep.label}</Header>
       <Metrics index={index} />

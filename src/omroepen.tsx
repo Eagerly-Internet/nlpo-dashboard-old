@@ -20,3 +20,12 @@ export const TOPICS = [
   "Vervoer en wegwerkzaamheden",
   "Evenementen en uitgaan",
 ];
+
+export const FILTERFIELDS = [
+  "date",
+  "author",
+  "topic",
+  "kernen",
+  "omroep",
+  "platform",
+];
