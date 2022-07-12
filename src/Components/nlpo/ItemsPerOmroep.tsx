@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Header, Menu } from "semantic-ui-react";
 import { addFilters, DashboardComponentProp } from "../../lib";
 import { KANALEN } from "./DashboardNLPO";
+import { InfoHeader } from "../InfoHeader";
 
 export default function ItemsPerOmroep({
   index,
@@ -11,7 +12,11 @@ export default function ItemsPerOmroep({
   const [kanaal, setKanaal] = useState(KANALEN[0]);
   return (
     <>
-      <Header>Aantal items per dag per omroep</Header>
+      <InfoHeader
+        text="Aantal items per dag per omroep"
+        info="In deze analyse wordt per omroep het aantal items per dag weergegeven. Klik op de tabbladen om dit te bekijken per platform."
+      />
+
       <Menu pointing secondary>
         {KANALEN.map((k) => (
           <Menu.Item

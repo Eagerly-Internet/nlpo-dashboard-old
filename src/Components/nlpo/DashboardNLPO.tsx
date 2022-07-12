@@ -6,6 +6,7 @@ import { FILTERFIELDS, OMROEPEN } from "../../omroepen";
 import { DashboardsProps } from "../Dashboards";
 import Locaties from "../omroep/Locaties";
 import ItemsPerOmroep from "./ItemsPerOmroep";
+import { InfoHeader } from "../InfoHeader";
 
 export const KANALEN = ["Website", "Twitter", "Facebook", "Youtube"];
 
@@ -71,7 +72,10 @@ export default function DashboardNLPO({
         </Grid.Row>
         <Grid.Row stretched>
           <Grid.Column width={8}>
-            <Header>Artikelen per moment van de dag</Header>
+            <InfoHeader
+              text={"Artikelen per moment van de dag"}
+              info="Aantal artikelen gepubliceerd per moment van de dag. Klik op de tabbladen om verschillende platformen te bekijken."
+            />
             <div
               style={{
                 marginLeft: "15%",
@@ -105,7 +109,10 @@ export default function DashboardNLPO({
             />
           </Grid.Column>
           <Grid.Column width={8}>
-            <Header>Artikelen per dag van de week</Header>
+            <InfoHeader
+              text={"Artikelen per dag van de week"}
+              info="Aantal artikelen gepubliceerd per dag van de week. Klik op de tabbladen om verschillende platformen te bekijken."
+            />
             <div
               style={{
                 marginLeft: "15%",
@@ -141,7 +148,10 @@ export default function DashboardNLPO({
         </Grid.Row>
         <Grid.Row stretched>
           <Grid.Column width={8}>
-            <Header>Onderwerpen</Header>
+            <InfoHeader
+              text={"Onderwerpen in het nieuws"}
+              info="Aantal artikelen per onderwerp. Deze onderwerpen zijn gebaseerd op zoektermen rondom een onderwerp, gebaseerd op eerder onderzoek naar het nieuws van lokale omroepen. Een artikel kan hierbij ook over meerdere onderwerpen gaan."
+            />
             <AggregateResult
               index={index}
               query={query}
@@ -154,6 +164,10 @@ export default function DashboardNLPO({
             />
           </Grid.Column>
           <Grid.Column width={6}>
+            <InfoHeader
+              text={"Locaties"}
+              info="Hieronder is een plattegrond te zien waarin alle plaatsen waar het nieuws over gaat worden weergegeven. Het tabblad Kernen geeft weer welke van de kernen die de lokale omroep bedient ook daadwerkelijk genoemd wordt in het nieuws. Het tabblad Alle locaties geeft alle locaties weer die in het nieuws van de lokale omroep genoemd zijn."
+            />
             <Locaties index={index} query={query} />
           </Grid.Column>
         </Grid.Row>
