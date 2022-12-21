@@ -6,7 +6,8 @@ import { Modal } from "semantic-ui-react";
 import "./App.css";
 import Dashboards from "./Components/Dashboards";
 
-const HOST = "https://nlpo.nieuwsmonitor.org/api";
+//const HOST = "https://nlpo.nieuwsmonitor.org/api";
+const HOST = `${process.env.AMCAT}` || "https://nlpo.nieuwsmonitor.org/api";
 //const HOST = "http://localhost:5000";
 
 function App() {
