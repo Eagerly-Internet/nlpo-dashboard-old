@@ -12,10 +12,7 @@ export default function ItemsPerOmroep({
   const [kanaal, setKanaal] = useState(KANALEN[0]);
   return (
     <>
-      <InfoHeader
-        text="Aantal items per dag per omroep"
-        info="In deze analyse wordt per omroep het aantal items per dag weergegeven. Klik op de tabbladen om dit te bekijken per platform."
-      />
+      <InfoHeader text="Aantal items per dag per omroep" info="In deze analyse wordt per omroep het aantal items per dag weergegeven. Klik op de tabbladen om dit te bekijken per platform." />
 
       <Menu pointing secondary>
         {KANALEN.map((k) => (
@@ -35,7 +32,7 @@ export default function ItemsPerOmroep({
         height={400}
         options={{
           display: "linechart",
-          axes: [{ field: "date", interval: "week" }, { field: "omroep" }],
+          axes: [{ field: "date", interval: "day" }, { field: "omroep" }],
         }}
       />
     </>
