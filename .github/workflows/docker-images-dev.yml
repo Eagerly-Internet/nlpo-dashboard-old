@@ -1,0 +1,23 @@
+name: Build and Push Docker Image Development
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker Image
+      run: |
+        docker build -f Dockerfile.dev -t nlpo-dashboard .
+        echo "${{ secrets.CONTAINER_REGISTRY_PASSWORD }}" | docker login ghcr.io -u "${{ secrets.CONTAINER_REGISTRY_USERNAME }}" --password-stdin
+
+    - name: Push Docker Image
+      run: |
+        docker tag nlpo-dashboard-old ghcr.io/eagerly-internet/nlpo-dashboard-old:dev
+        docker push ghcr.io/eagerly-internet/nlpo-dashboard-old:dev
